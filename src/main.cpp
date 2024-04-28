@@ -7,7 +7,8 @@
 int main()
 {
     sonia_common_cpp::EthernetSocket socket = sonia_common_cpp::EthernetSocket();
-    socket.Connect("192.168.0.32", 9002);
+    socket.ConnectUDP(1034);
+    socket.ConnectTCP("192.168.0.32", 1033);
 
     std::string str1, cmd;
     str1 = "===\n";
