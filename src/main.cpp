@@ -9,9 +9,9 @@ int main()
     sonia_common_cpp::EthernetSocket socket = sonia_common_cpp::EthernetSocket();
     socket.Connect("192.168.0.32", 9002);
 
-    std::string str, cmd;
-    str = "===\n";
-    std::vector<uint8_t> strv(str.begin(), str.end());
+    std::string str1, cmd;
+    str1 = "===\n";
+    std::vector<uint8_t> strv(str1.begin(), str1.end());
     socket.Send(strv);
     std::this_thread::sleep_for(std::chrono::seconds(1));
     cmd = "CS\n";
@@ -29,7 +29,6 @@ int main()
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     
-    str = "===\n";
     socket.Send(strv);
 
     return EXIT_SUCCESS;
