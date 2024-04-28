@@ -21,6 +21,8 @@ int main()
 
     for (int i = 0; i < 100; i++)
     {
+        socket.Receive();
+
         std::vector<uint8_t> data = socket.GetRawData();
 
         std::string str(data.begin(), data.end());
