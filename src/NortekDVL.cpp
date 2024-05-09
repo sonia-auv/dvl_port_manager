@@ -6,7 +6,7 @@ using std::placeholders::_1;
 namespace dvl_port_manager
 {
     NortekDVL::NortekDVL()
-        : DVLProvider(_NORTEK_IP_ADDR, 9002, 0, sizeof(NortekFormat_t)), _depthOffset{}
+        : DVLProvider("192.168.0.12", 9002, 0, sizeof(NortekFormat_t)), _depthOffset{}
     {
         _publisherSpeed = this->create_publisher<sonia_common_ros2::msg::BodyVelocityDVL>("/provider_dvl/dvl_velocity", 10);
         _publisherFluidPressure = this->create_publisher<sensor_msgs::msg::FluidPressure>("/provider_dvl/dvl_pressure", 10);
