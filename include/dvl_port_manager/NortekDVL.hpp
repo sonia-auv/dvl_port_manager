@@ -31,7 +31,6 @@ namespace dvl_port_manager
         float _convertDBarToMeters(float dBarValue);
 
         const float dBAR_TO_METER_OF_WATER = 10.1972f;
-        const std::string _NORTEK_IP_ADDR = "192.168.0.12";
         const uint8_t _NORTEK_ID = 0xA5;
 
         rclcpp::Publisher<sonia_common_ros2::msg::BodyVelocityDVL>::SharedPtr _publisherSpeed;
