@@ -8,7 +8,7 @@ def generate_launch_description():
                 package="dvl_port_manager",
                 namespace="dvl_port_manager",
                 executable="dvl_port_manager",
-                name="prover_dvl",
+                name="provider_dvl",
             )
         ]
     )
