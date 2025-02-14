@@ -1,7 +1,7 @@
 #pragma once
 
 #include "rclcpp/rclcpp.hpp"
-#include "sonia_common_cpp/EthernetSocket.h"
+#include "sonia_common_cpp/EthernetSocket.hpp"
 
 namespace dvl_port_manager
 {

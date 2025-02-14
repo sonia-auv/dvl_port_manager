@@ -24,8 +24,8 @@ install(
 )
 
 install(
-  DIRECTORY launch/
-  DESTINATION share/${PROJECT_NAME}
+  DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}/
 )
 
 install(TARGETS
