@@ -58,6 +58,7 @@ namespace dvl_port_manager
         }
         else
         {
+            RCLCPP_WARN(this->get_logger(), "X velocity not valid : %f", _dvlData.data.velX);
             message.x_vel_btm = 0.0;
         }
         if (_dvlData.data.status.bit_field.yVelValid)
@@ -66,6 +67,7 @@ namespace dvl_port_manager
         }
         else
         {
+            RCLCPP_WARN(this->get_logger(), "Y velocity not valid : %f", _dvlData.data.velX);
             message.y_vel_btm = 0.0;
         }
         if (_dvlData.data.status.bit_field.z1VelValid)
@@ -74,6 +76,7 @@ namespace dvl_port_manager
         }
         else
         {
+            RCLCPP_WARN(this->get_logger(), "Z velocity not valid : %f", _dvlData.data.velX);
             message.z_vel_btm = 0.0;
         }
 
