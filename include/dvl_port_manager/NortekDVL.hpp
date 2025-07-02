@@ -1,5 +1,6 @@
 #pragma once
 
+#include <std_srvs/srv/trigger.hpp>
 #include "dvl_port_manager/DVLProvider.hpp"
 #include "dvl_port_manager/DVLDataFormat.hpp"
 #include "rclcpp/rclcpp.hpp"
@@ -8,7 +9,6 @@
 #include "sensor_msgs/msg/temperature.hpp"
 #include "std_msgs/msg/float32.hpp"
 #include "std_msgs/msg/empty.hpp"
-
 namespace dvl_port_manager
 {
     class NortekDVL final : public DVLProvider
@@ -21,7 +21,7 @@ namespace dvl_port_manager
         void receiveDataThread() override;
 
     private:
-        void _setDepthOffsetCallback(const std_msgs::msg::Empty &msg);
+        void tare(const std::shared_ptr<std_srvs::srv::Trigger::Request> request, std::shared_ptr<std_srvs::srv::Trigger::Response> response);
 
         void _fillTwistMessage(rclcpp::Time timestamp);
         void _fillFluidPresureMessage(rclcpp::Time timestamp);
@@ -37,7 +37,8 @@ namespace dvl_port_manager
         rclcpp::Publisher<sensor_msgs::msg::FluidPressure>::SharedPtr _publisherFluidPressure;
         rclcpp::Publisher<sensor_msgs::msg::Temperature>::SharedPtr _publisherTemperature;
         rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr _publisherRelativeDepth;
-        rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr _subscriptionSetDepthOffset;
+
+        rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr _tare_srv;
 
         float _depthOffset;
         NortekFormat_t _dvlData;
