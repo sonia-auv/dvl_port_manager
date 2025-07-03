@@ -47,6 +47,7 @@ namespace dvl_port_manager
     {
         _depthOffset = _dvlData.data.pressure;
         response->success=true;
+        response->message="Depth Sensor tared";
     }
 
     void NortekDVL::_fillTwistMessage(rclcpp::Time timestamp)
