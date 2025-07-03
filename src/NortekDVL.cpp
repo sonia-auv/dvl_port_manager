@@ -13,7 +13,7 @@ namespace dvl_port_manager
         _publisherTemperature = this->create_publisher<sensor_msgs::msg::Temperature>("/provider_dvl/dvl_water_temperature", 10);
         _publisherRelativeDepth = this->create_publisher<std_msgs::msg::Float32>("/provider_depth/depth", 10);
 
-        _tare_srv = this->create_service<std_srvs::srv::Trigger>("/provider_depth/tare", std::bind(&NortekDVL::tare, this, _1, _2));
+        _tare_srv = this->create_service<std_srvs::srv::Trigger>("/provider_depth/tare", std::bind(&NortekDVL::_tare_depth, this, _1, _2));
 
     }
 
@@ -43,7 +43,7 @@ namespace dvl_port_manager
         }
     }
 
-    void NortekDVL::tare(const std::shared_ptr<std_srvs::srv::Trigger::Request> request, std::shared_ptr<std_srvs::srv::Trigger::Response> response)
+    void NortekDVL::_tare_depth(const std::shared_ptr<std_srvs::srv::Trigger::Request> request, std::shared_ptr<std_srvs::srv::Trigger::Response> response)
     {
         _depthOffset = _dvlData.data.pressure;
         response->success=true;
