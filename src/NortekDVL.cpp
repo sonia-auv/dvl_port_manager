@@ -45,6 +45,7 @@ namespace dvl_port_manager
 
     void NortekDVL::_tare_depth(const std::shared_ptr<std_srvs::srv::Trigger::Request> request, std::shared_ptr<std_srvs::srv::Trigger::Response> response)
     {
+        (void)request; // ignore param
         _depthOffset = _dvlData.data.pressure;
         response->success=true;
         response->message="Depth Sensor tared";
