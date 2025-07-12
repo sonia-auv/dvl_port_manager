@@ -30,8 +30,11 @@ install(
 )
 
 install(TARGETS
-${PROJECT_NAME}
-  DESTINATION lib/${PROJECT_NAME})
+  ${PROJECT_NAME}
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Wpedantic -Werror)
 
 ament_target_dependencies(${PROJECT_NAME} rclcpp sonia_common_cpp sonia_common_ros2 sensor_msgs std_srvs)
 
