@@ -2,7 +2,7 @@
 #include "dvl_port_manager/DVLDataFormat.hpp"
 
 using std::placeholders::_1;
-
+using std::placeholders::_2;
 namespace dvl_port_manager
 {
     NortekDVL::NortekDVL()
@@ -12,7 +12,9 @@ namespace dvl_port_manager
         _publisherFluidPressure = this->create_publisher<sensor_msgs::msg::FluidPressure>("/provider_dvl/dvl_pressure", 10);
         _publisherTemperature = this->create_publisher<sensor_msgs::msg::Temperature>("/provider_dvl/dvl_water_temperature", 10);
         _publisherRelativeDepth = this->create_publisher<std_msgs::msg::Float32>("/provider_depth/depth", 10);
-        _subscriptionSetDepthOffset = this->create_subscription<std_msgs::msg::Empty>("/provider_dvl/setDepthOffset", 10, std::bind(&NortekDVL::_setDepthOffsetCallback, this, _1));
+
+        _tare_srv = this->create_service<std_srvs::srv::Trigger>("/provider_depth/tare", std::bind(&NortekDVL::_tare_depth, this, _1, _2));
+
     }
 
     void NortekDVL::receiveDataThread()
@@ -41,9 +43,11 @@ namespace dvl_port_manager
         }
     }
 
-    void NortekDVL::_setDepthOffsetCallback(const std_msgs::msg::Empty &msg)
+    void NortekDVL::_tare_depth(const std::shared_ptr<std_srvs::srv::Trigger::Request> request, std::shared_ptr<std_srvs::srv::Trigger::Response> response)
     {
         _depthOffset = _dvlData.data.pressure;
+        response->success=true;
+        response->message="Depth Sensor tared";
     }
 
     void NortekDVL::_fillTwistMessage(rclcpp::Time timestamp)
