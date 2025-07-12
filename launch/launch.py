@@ -6,9 +6,7 @@ def generate_launch_description():
         [
             Node(
                 package="dvl_port_manager",
-                namespace="dvl_port_manager",
                 executable="dvl_port_manager",
-                name="provider_dvl",
             )
         ]
     )
