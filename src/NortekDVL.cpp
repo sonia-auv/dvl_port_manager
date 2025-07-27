@@ -8,6 +8,7 @@ namespace dvl_port_manager
     NortekDVL::NortekDVL()
         : DVLProvider("192.168.0.12", 9002, 0, sizeof(NortekFormat_t)), _depthOffset{}
     {
+        
         _publisherSpeed = this->create_publisher<sonia_common_ros2::msg::BodyVelocityDVL>("/provider_dvl/dvl_velocity", 10);
         _publisherFluidPressure = this->create_publisher<sensor_msgs::msg::FluidPressure>("/provider_dvl/dvl_pressure", 10);
         _publisherTemperature = this->create_publisher<sensor_msgs::msg::Temperature>("/provider_dvl/dvl_water_temperature", 10);

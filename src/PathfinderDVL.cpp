@@ -8,8 +8,11 @@ namespace dvl_port_manager
     PathfinderDVL::PathfinderDVL()
         : DVLProvider("192.168.0.32", 1033, 1035, sizeof(PathfinderFormat_t))
     {
-        _publisherBodyVelocity = this->create_publisher<sonia_common_ros2::msg::BodyVelocityDVL>("/provider_dvl/dvl_velocity", 10);
-        _publisherLeakSensor = this->create_publisher<std_msgs::msg::Bool>("/provider_dvl/dvl_leak_sensor", 10);
+        rclcpp::QoS qos(10);
+        qos.reliable();
+
+        _publisherBodyVelocity = this->create_publisher<sonia_common_ros2::msg::BodyVelocityDVL>("/provider_dvl/dvl_velocity", qos);
+        _publisherLeakSensor = this->create_publisher<std_msgs::msg::Bool>("/provider_dvl/dvl_leak_sensor", qos);
         _subscriptionEnableDisableDVL = this->create_subscription<std_msgs::msg::Bool>("/provider_dvl/enable_disable_dvl", 10, std::bind(&PathfinderDVL::_enableDisableDVL, this, _1));
     }
 
