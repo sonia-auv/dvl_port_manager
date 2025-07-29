@@ -8,11 +8,14 @@ namespace dvl_port_manager
     NortekDVL::NortekDVL()
         : DVLProvider("192.168.0.12", 9002, 0, sizeof(NortekFormat_t)), _depthOffset{}
     {
+        //Setting Quality of service policy
+        rclcpp::QoS qos_pub_info(10);
+        qos_pub_info.reliability(rclcpp::ReliabilityPolicy::BestEffort).durability(rclcpp::DurabilityPolicy::Volatile).history(rclcpp::HistoryPolicy::KeepLast);
         
-        _publisherSpeed = this->create_publisher<sonia_common_ros2::msg::BodyVelocityDVL>("/provider_dvl/dvl_velocity", 10);
-        _publisherFluidPressure = this->create_publisher<sensor_msgs::msg::FluidPressure>("/provider_dvl/dvl_pressure", 10);
-        _publisherTemperature = this->create_publisher<sensor_msgs::msg::Temperature>("/provider_dvl/dvl_water_temperature", 10);
-        _publisherRelativeDepth = this->create_publisher<std_msgs::msg::Float32>("/provider_depth/depth", 10);
+        _publisherSpeed = this->create_publisher<sonia_common_ros2::msg::BodyVelocityDVL>("/provider_dvl/dvl_velocity", qos_pub_info);
+        _publisherFluidPressure = this->create_publisher<sensor_msgs::msg::FluidPressure>("/provider_dvl/dvl_pressure", qos_pub_info);
+        _publisherTemperature = this->create_publisher<sensor_msgs::msg::Temperature>("/provider_dvl/dvl_water_temperature", qos_pub_info);
+        _publisherRelativeDepth = this->create_publisher<std_msgs::msg::Float32>("/provider_depth/depth", qos_pub_info);
 
         _tare_srv = this->create_service<std_srvs::srv::Trigger>("/provider_depth/tare", std::bind(&NortekDVL::_tare_depth, this, _1, _2));
 
