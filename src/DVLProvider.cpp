@@ -23,8 +23,6 @@ namespace dvl_port_manager
     
     DVLProvider::~DVLProvider()
     {
-        if(_receiveThread.joinable())
-            _receiveThread.join();
     }
 
 } // namespace dvl_port_manager
