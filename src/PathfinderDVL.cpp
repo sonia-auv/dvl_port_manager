@@ -13,7 +13,7 @@ namespace dvl_port_manager
         qos_pub_info.reliability(rclcpp::ReliabilityPolicy::BestEffort).durability(rclcpp::DurabilityPolicy::Volatile).history(rclcpp::HistoryPolicy::KeepLast);
 
         rclcpp::QoS qos_sub_info(1);
-        qos_sub_info.reliability(rclcpp::ReliabilityPolicy::Reliable).durability(rclcpp::DurabilityPolicy::TransientLocal);
+        qos_sub_info.reliability(rclcpp::ReliabilityPolicy::Reliable).durability(rclcpp::DurabilityPolicy::Volatile);
 
         _publisherBodyVelocity = this->create_publisher<sonia_common_ros2::msg::BodyVelocityDVL>("/provider_dvl/dvl_velocity", qos_pub_info);
         _publisherLeakSensor = this->create_publisher<std_msgs::msg::Bool>("/provider_dvl/dvl_leak_sensor", qos_pub_info);
