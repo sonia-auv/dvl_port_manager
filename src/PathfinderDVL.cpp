@@ -42,7 +42,6 @@ namespace dvl_port_manager
         while (rclcpp::ok())
         {
             _socket.ReceiveUDP();
-            RCLCPP_DEBUG(this->get_logger(), "Data Received");
 
             getData<PathfinderFormat_t>(_dvlData);
 
