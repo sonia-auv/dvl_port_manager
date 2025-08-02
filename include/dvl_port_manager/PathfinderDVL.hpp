@@ -11,7 +11,7 @@ namespace dvl_port_manager
     {
     public:
         PathfinderDVL();
-        ~PathfinderDVL(){};
+        ~PathfinderDVL();
 
     protected:
         void receiveDataThread() override;

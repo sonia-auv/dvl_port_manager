@@ -19,6 +19,9 @@ namespace dvl_port_manager
         _publisherLeakSensor = this->create_publisher<std_msgs::msg::Bool>("/provider_dvl/dvl_leak_sensor", qos_pub_info);
         _subscriptionEnableDisableDVL = this->create_subscription<std_msgs::msg::Bool>("/provider_dvl/enable_disable_dvl", qos_sub_info, std::bind(&PathfinderDVL::_enableDisableDVL, this, _1));
     }
+    PathfinderDVL::~PathfinderDVL(){
+        
+    }
 
     void PathfinderDVL::_enableDisableDVL(const std_msgs::msg::Bool &msg)
     {
