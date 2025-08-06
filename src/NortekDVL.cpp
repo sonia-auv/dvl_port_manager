@@ -10,8 +10,9 @@ namespace dvl_port_manager
     {
         //Setting Quality of service policy
         rclcpp::QoS qos_pub_info(10);
-        qos_pub_info.reliability(rclcpp::ReliabilityPolicy::BestEffort).durability(rclcpp::DurabilityPolicy::Volatile).history(rclcpp::HistoryPolicy::KeepLast);
+        qos_pub_info.reliability(rclcpp::ReliabilityPolicy::BestEffort);
         
+        //publishers
         _publisherSpeed = this->create_publisher<sonia_common_ros2::msg::BodyVelocityDVL>("/provider_dvl/dvl_velocity", qos_pub_info);
         _publisherFluidPressure = this->create_publisher<sensor_msgs::msg::FluidPressure>("/provider_dvl/dvl_pressure", qos_pub_info);
         _publisherTemperature = this->create_publisher<sensor_msgs::msg::Temperature>("/provider_dvl/dvl_water_temperature", qos_pub_info);

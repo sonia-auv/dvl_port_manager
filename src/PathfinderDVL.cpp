@@ -10,10 +10,10 @@ namespace dvl_port_manager
     {
         //Setting Quality of service policy
         rclcpp::QoS qos_pub_info(10);
-        qos_pub_info.reliability(rclcpp::ReliabilityPolicy::BestEffort).durability(rclcpp::DurabilityPolicy::Volatile).history(rclcpp::HistoryPolicy::KeepLast);
+        qos_pub_info.reliability(rclcpp::ReliabilityPolicy::BestEffort);
 
         rclcpp::QoS qos_sub_info(1);
-        qos_sub_info.reliability(rclcpp::ReliabilityPolicy::Reliable).durability(rclcpp::DurabilityPolicy::Volatile);
+        qos_sub_info.reliability(rclcpp::ReliabilityPolicy::Reliable);
 
         _publisherBodyVelocity = this->create_publisher<sonia_common_ros2::msg::BodyVelocityDVL>("/provider_dvl/dvl_velocity", qos_pub_info);
         _publisherLeakSensor = this->create_publisher<std_msgs::msg::Bool>("/provider_dvl/dvl_leak_sensor", qos_pub_info);
