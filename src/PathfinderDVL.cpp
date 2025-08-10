@@ -8,9 +8,19 @@ namespace dvl_port_manager
     PathfinderDVL::PathfinderDVL()
         : DVLProvider("192.168.0.32", 1033, 1035, sizeof(PathfinderFormat_t))
     {
-        _publisherBodyVelocity = this->create_publisher<sonia_common_ros2::msg::BodyVelocityDVL>("/provider_dvl/dvl_velocity", 10);
-        _publisherLeakSensor = this->create_publisher<std_msgs::msg::Bool>("/provider_dvl/dvl_leak_sensor", 10);
-        _subscriptionEnableDisableDVL = this->create_subscription<std_msgs::msg::Bool>("/provider_dvl/enable_disable_dvl", 10, std::bind(&PathfinderDVL::_enableDisableDVL, this, _1));
+        //Setting Quality of service policy
+        rclcpp::QoS qos_pub_info(10);
+        qos_pub_info.reliability(rclcpp::ReliabilityPolicy::Reliable);
+
+        rclcpp::QoS qos_sub_info(1);
+        qos_sub_info.reliability(rclcpp::ReliabilityPolicy::Reliable);
+
+        _publisherBodyVelocity = this->create_publisher<sonia_common_ros2::msg::BodyVelocityDVL>("/provider_dvl/dvl_velocity", qos_pub_info);
+        _publisherLeakSensor = this->create_publisher<std_msgs::msg::Bool>("/provider_dvl/dvl_leak_sensor", qos_pub_info);
+        _subscriptionEnableDisableDVL = this->create_subscription<std_msgs::msg::Bool>("/provider_dvl/enable_disable_dvl", qos_sub_info, std::bind(&PathfinderDVL::_enableDisableDVL, this, _1));
+    }
+    PathfinderDVL::~PathfinderDVL(){
+        
     }
 
     void PathfinderDVL::_enableDisableDVL(const std_msgs::msg::Bool &msg)
@@ -35,7 +45,6 @@ namespace dvl_port_manager
         while (rclcpp::ok())
         {
             _socket.ReceiveUDP();
-            RCLCPP_DEBUG(this->get_logger(), "Data Received");
 
             getData<PathfinderFormat_t>(_dvlData);
 
