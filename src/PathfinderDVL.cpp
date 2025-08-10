@@ -10,7 +10,7 @@ namespace dvl_port_manager
     {
         //Setting Quality of service policy
         rclcpp::QoS qos_pub_info(10);
-        qos_pub_info.reliability(rclcpp::ReliabilityPolicy::BestEffort);
+        qos_pub_info.reliability(rclcpp::ReliabilityPolicy::Reliable);
 
         rclcpp::QoS qos_sub_info(1);
         qos_sub_info.reliability(rclcpp::ReliabilityPolicy::Reliable);
