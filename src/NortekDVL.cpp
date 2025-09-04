@@ -27,24 +27,30 @@ namespace dvl_port_manager
         rclcpp::Rate rate(GetSpinRate());
         while (rclcpp::ok())
         {
-            _socket.ReceiveTCP();
-            RCLCPP_DEBUG(this->get_logger(), "Data Received");
+            try{
+                _socket.ReceiveTCP();
+                RCLCPP_DEBUG(this->get_logger(), "Data Received");
 
-            getData<NortekFormat_t>(_dvlData);
+                getData<NortekFormat_t>(_dvlData);
 
-            if (_dvlData.header.sync == _NORTEK_ID)
-            {
-                rclcpp::Time timestamp = this->now();
-                _fillTwistMessage(timestamp);
-                _fillFluidPresureMessage(timestamp);
-                _fillTemperatureMessage(timestamp);
-                _fillRelativeDepthMessage();
+                if (_dvlData.header.sync == _NORTEK_ID)
+                {
+                    rclcpp::Time timestamp = this->now();
+                    _fillTwistMessage(timestamp);
+                    _fillFluidPresureMessage(timestamp);
+                    _fillTemperatureMessage(timestamp);
+                    _fillRelativeDepthMessage();
+                }
+                else
+                {
+                    RCLCPP_WARN(this->get_logger(), "Nortek ID mismatch : %d != %u", _NORTEK_ID, _dvlData.header.sync);
+                }
+                rate.sleep();
             }
-            else
-            {
-                RCLCPP_WARN(this->get_logger(), "Nortek ID mismatch : %d != %u", _NORTEK_ID, _dvlData.header.sync);
-            }
-            rate.sleep();
+            catch (int errorCode) {
+                RCLCPP_WARN(this->get_logger(), "Error : %d", errorCode);
+                rate.sleep();
+            } 
         }
     }
 

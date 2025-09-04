@@ -44,44 +44,50 @@ namespace dvl_port_manager
         rclcpp::Rate rate(GetSpinRate());
         while (rclcpp::ok())
         {
-            _socket.ReceiveUDP();
+            try{
+                _socket.ReceiveUDP();
 
-            getData<PathfinderFormat_t>(_dvlData);
+                getData<PathfinderFormat_t>(_dvlData);
 
-            if (_dvlData.pd4.pathfinderDataId == _PATHFINDER_ID)
-            {
-                RCLCPP_DEBUG(this->get_logger(), "ID Correct");
-
-                if (_dvlData.pd4.checksum == _calculateCheckSum<PathfinderFormat_t>(reinterpret_cast<uint8_t *>(_socket.GetRawData())))
+                if (_dvlData.pd4.pathfinderDataId == _PATHFINDER_ID)
                 {
-                    sonia_common_ros2::msg::BodyVelocityDVL message;
+                    RCLCPP_DEBUG(this->get_logger(), "ID Correct");
 
-                    message.header.stamp.sec = _dvlData.pd4.secondFirstPing;
-                    message.header.stamp.nanosec = _dvlData.pd4.hundredthFirstPing;
-                    message.header.frame_id = "/EMU"; // PD4
+                    if (_dvlData.pd4.checksum == _calculateCheckSum<PathfinderFormat_t>(reinterpret_cast<uint8_t *>(_socket.GetRawData())))
+                    {
+                        sonia_common_ros2::msg::BodyVelocityDVL message;
 
-                    message.x_vel_btm = ((double_t)_dvlData.pd4.xVelBtm) / 1000.0;
-                    message.y_vel_btm = ((double_t)_dvlData.pd4.yVelBtm) / 1000.0;
-                    message.z_vel_btm = ((double_t)_dvlData.pd4.zVelBtm) / 1000.0;
-                    message.e_vel_btm = ((double_t)_dvlData.pd4.eVelBtm) / 1000.0;
+                        message.header.stamp.sec = _dvlData.pd4.secondFirstPing;
+                        message.header.stamp.nanosec = _dvlData.pd4.hundredthFirstPing;
+                        message.header.frame_id = "/EMU"; // PD4
 
-                    message.velocity1 = ((double_t)_dvlData.pd4.velocity1) / 1000.0;
-                    message.velocity2 = ((double_t)_dvlData.pd4.velocity2) / 1000.0;
-                    message.velocity3 = ((double_t)_dvlData.pd4.velocity3) / 1000.0;
-                    message.velocity4 = ((double_t)_dvlData.pd4.velocity4) / 1000.0;
+                        message.x_vel_btm = ((double_t)_dvlData.pd4.xVelBtm) / 1000.0;
+                        message.y_vel_btm = ((double_t)_dvlData.pd4.yVelBtm) / 1000.0;
+                        message.z_vel_btm = ((double_t)_dvlData.pd4.zVelBtm) / 1000.0;
+                        message.e_vel_btm = ((double_t)_dvlData.pd4.eVelBtm) / 1000.0;
 
-                    _publisherBodyVelocity->publish(message);
+                        message.velocity1 = ((double_t)_dvlData.pd4.velocity1) / 1000.0;
+                        message.velocity2 = ((double_t)_dvlData.pd4.velocity2) / 1000.0;
+                        message.velocity3 = ((double_t)_dvlData.pd4.velocity3) / 1000.0;
+                        message.velocity4 = ((double_t)_dvlData.pd4.velocity4) / 1000.0;
+
+                        _publisherBodyVelocity->publish(message);
+                    }
+                    else
+                    {
+                        RCLCPP_WARN(this->get_logger(), "Bad Checksum");
+                    }
                 }
                 else
                 {
-                    RCLCPP_WARN(this->get_logger(), "Bad Checksum");
+                    RCLCPP_WARN(this->get_logger(), "Pathfinder ID mismatch : %d", _PATHFINDER_ID);
                 }
+                rate.sleep();
             }
-            else
-            {
-                RCLCPP_WARN(this->get_logger(), "Pathfinder ID mismatch : %d", _PATHFINDER_ID);
-            }
-            rate.sleep();
+            catch (int errorCode) {
+                RCLCPP_WARN(this->get_logger(), "Error : %d", errorCode);
+                rate.sleep();
+            } 
         }
     }
 
