@@ -4,7 +4,7 @@ namespace dvl_port_manager
 {
 
     DVLProvider::DVLProvider(std::string ipAddr, int tcpPort, int udpPort, size_t tram_size)
-        : rclcpp::Node("dvl_port_manager"), _socket(tram_size), _rosSpinRate(20)
+        : rclcpp::Node("dvl_provider"), _socket(tram_size), _rosSpinRate(20)
     {
         if (!_socket.ConnectTCP(ipAddr, tcpPort))
         {
