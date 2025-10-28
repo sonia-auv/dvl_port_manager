@@ -16,12 +16,12 @@
 * `rclcpp`
 * `std_msgs`
 * `std_srvs`
-* `sonia_common_ros2`
 * `sensor_msgs`
 
-### Additional packages
+### Sonia packages
 
 * `sonia_common_cpp`
+* `sonia_common_ros2`
 
 ---
 
@@ -36,9 +36,9 @@
 
 | Type                             | Name                               | Direction       | Message/Service Type                 | Description                        |
 | -------------------------------- | ---------------------------------- | ----------------| ------------------------------------ | ---------------------------------- |
-| Topic                            | `/provider_dvl/dvl_velocity`       | Published       | `sonia_common_ros2/msg/BodyVelocity` | Velocity data from the dvl         |
+| Topic                            | `/provider_dvl/dvl_velocity`       | Published       | `sonia_common_ros2/msg/BodyVelocity` | Body velocity data from the dvl    |
 | Topic                            | `/provider_dvl/dvl_leak_sensor`    | Published       | `std_msgs/msg/Bool`                  | Signal for leakage from the dvl    |
-| Topic                            | `/provider_dvl/enable_disable_dvl` | Subscribed      | `std_msgs/msg/Bool`                  | Signal the dvl to start            |
+| Topic                            | `/provider_dvl/enable_disable_dvl` | Subscribed      | `std_msgs/msg/Bool`                  | Signal the dvl to start or stop    |
 
 ---
 ## Build Instructions
@@ -73,7 +73,8 @@ ros2 param list /dvl_provider
 
 ## References
 
-* [ROS 2 Humble Documentation](https://docs.ros.org/en/humble/)
 * [sonia_common_ros2](https://github.com/sonia-auv/sonia_common_ros2)
+* [Teledyne Marine Pathfinder DVL](https://www.teledynemarine.com/brands/rdi/pathfinder-dvl)
+* [Teledyne Marine Pathfinder DVL User Manual](https://www.teledynemarine.com/en-us/resources/Documents/Brand%20Support/RD%20INSTRUMENTS/Technical%20Resources/Manuals%20and%20Guides/Pathfinder/PathFinder%20DVL%20Guide_Apr22.pdf)
 
 ---
