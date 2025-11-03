@@ -1,6 +1,6 @@
 # dvl_port_manager
 
-This project provides a ROS 2 interface for Doppler Velocity Log (DVL) sensors, supporting both the **Nortek DVL 500** and **Pathfinder DVL** models. It communicates with the DVL over an Ethernet connection using either TCP or UDP protocols, depending on configuration. The node receives raw data streams containing velocity, altitude, and diagnostic information, parses them to extract bottom-track and water-track velocity measurements, and publishes the results through **ROS2** communication to the prototypes control system for navigation. 
+This project provides a ROS 2 interface for Doppler Velocity Log (DVL) sensors, supporting both the **Nortek DVL 500** and **Pathfinder DVL** models. It communicates with the DVL over an Ethernet connection using either TCP or UDP protocols. The node receives raw data streams containing velocity, altitude, and diagnostic information, parses them to extract bottom-track and water-track velocity measurements, and publishes the results through **ROS2** communication to the prototypes control system for navigation. 
 
 ---
 
@@ -30,7 +30,7 @@ This project provides a ROS 2 interface for Doppler Velocity Log (DVL) sensors, 
 * Name: `dvl_provider`
 * Port Name: `{dvl_ip_address}`
 * Port type: Ethernet
-* Port: TCP, UDP
+* Protocol: TCP, UDP
 
 ---
 
