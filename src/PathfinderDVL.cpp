@@ -17,7 +17,11 @@ namespace dvl_port_manager
 
         _publisherBodyVelocity = this->create_publisher<sonia_common_ros2::msg::BodyVelocityDVL>("/provider_dvl/dvl_velocity", qos_pub_info);
         _publisherLeakSensor = this->create_publisher<std_msgs::msg::Bool>("/provider_dvl/dvl_leak_sensor", qos_pub_info);
+        _publisherNodeStatus = this->create_publisher<sonia_common_ros2::msg::NodeStatus>("/system_monitor/node_status",1);
         _subscriptionEnableDisableDVL = this->create_subscription<std_msgs::msg::Bool>("/provider_dvl/enable_disable_dvl", qos_sub_info, std::bind(&PathfinderDVL::_enableDisableDVL, this, _1));
+        _timerNodeStatus = this->create_wall_timer(500ms, std::bind(&PathfinderDVL::_publishStatus, this));
+        _nodeStatus.quality = sonia_common_ros2::msg::NodeStatus::LVL_OK;
+        _nodeStatus.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;
     }
     PathfinderDVL::~PathfinderDVL(){
         
@@ -30,11 +34,13 @@ namespace dvl_port_manager
             _socket.Send(&_START_STOP_CMD[0]);
             rclcpp::sleep_for(5s);
             _socket.Send(&_START_DATA_CMD[0]);
+            _nodeStatus.state = sonia_common_ros2::msg::NodeStatus::STATE_RUNNING;
             RCLCPP_INFO(this->get_logger(), "DVL Start Command Send.");
         }
         else
         {
             _socket.Send(&_START_STOP_CMD[0]);
+            _nodeStatus.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;
             RCLCPP_INFO(this->get_logger(), "DVL Stop Command Send.");
         }
     }
@@ -70,15 +76,19 @@ namespace dvl_port_manager
                     message.velocity3 = ((double_t)_dvlData.pd4.velocity3) / 1000.0;
                     message.velocity4 = ((double_t)_dvlData.pd4.velocity4) / 1000.0;
 
+                    _nodeStatus.quality = sonia_common_ros2::msg::NodeStatus::LVL_OK;
+
                     _publisherBodyVelocity->publish(message);
                 }
                 else
                 {
+                    _nodeStatus.quality = sonia_common_ros2::msg::NodeStatus::LVL_WARN;
                     RCLCPP_WARN(this->get_logger(), "Bad Checksum");
                 }
             }
             else
             {
+                _nodeStatus.quality = sonia_common_ros2::msg::NodeStatus::LVL_ERROR;
                 RCLCPP_WARN(this->get_logger(), "Pathfinder ID mismatch : %d", _PATHFINDER_ID);
             }
             rate.sleep();
@@ -101,6 +111,12 @@ namespace dvl_port_manager
         checksum = (1 - decimal) * 65536;
 
         return (uint16_t)ceil(checksum);
+    }
+
+    void PathfinderDVL::_publishStatus(){
+        _nodeStatus.node_name = this->get_name();
+        _nodeStatus.stamp = this->get_clock().get()->now();
+        _publisherNodeStatus->publish(_nodeStatus);
     }
 
 } // namespace dvl_port_manager
