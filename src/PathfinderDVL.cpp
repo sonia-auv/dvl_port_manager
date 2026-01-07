@@ -20,7 +20,8 @@ namespace dvl_port_manager
         _publisherNodeStatus = this->create_publisher<sonia_common_ros2::msg::NodeStatus>("/system_monitor/node_status",1);
         _subscriptionEnableDisableDVL = this->create_subscription<std_msgs::msg::Bool>("/provider_dvl/enable_disable_dvl", qos_sub_info, std::bind(&PathfinderDVL::_enableDisableDVL, this, _1));
         _timerNodeStatus = this->create_wall_timer(500ms, std::bind(&PathfinderDVL::_publishStatus, this));
-        _nodeStatus.quality = sonia_common_ros2::msg::NodeStatus::LVL_OK;
+        
+        _nodeStatus.quality = sonia_common_ros2::msg::NodeStatus::Q_OK;
         _nodeStatus.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;
     }
     PathfinderDVL::~PathfinderDVL(){
@@ -76,19 +77,19 @@ namespace dvl_port_manager
                     message.velocity3 = ((double_t)_dvlData.pd4.velocity3) / 1000.0;
                     message.velocity4 = ((double_t)_dvlData.pd4.velocity4) / 1000.0;
 
-                    _nodeStatus.quality = sonia_common_ros2::msg::NodeStatus::LVL_OK;
+                    _nodeStatus.quality = sonia_common_ros2::msg::NodeStatus::Q_OK;
 
                     _publisherBodyVelocity->publish(message);
                 }
                 else
                 {
-                    _nodeStatus.quality = sonia_common_ros2::msg::NodeStatus::LVL_WARN;
+                    _nodeStatus.quality = sonia_common_ros2::msg::NodeStatus::Q_WARN;
                     RCLCPP_WARN(this->get_logger(), "Bad Checksum");
                 }
             }
             else
             {
-                _nodeStatus.quality = sonia_common_ros2::msg::NodeStatus::LVL_ERROR;
+                _nodeStatus.quality = sonia_common_ros2::msg::NodeStatus::Q_ERROR;
                 RCLCPP_WARN(this->get_logger(), "Pathfinder ID mismatch : %d", _PATHFINDER_ID);
             }
             rate.sleep();
