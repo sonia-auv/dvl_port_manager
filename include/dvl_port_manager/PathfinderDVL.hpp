@@ -24,6 +24,7 @@ namespace dvl_port_manager
 
         template <class T>
         uint16_t _calculateCheckSum(uint8_t *dvlData);
+        void checkVelocity(const sonia_common_ros2::msg::BodyVelocityDVL data);
 
         std::string _START_STOP_CMD = "===\n";
         std::string _START_DATA_CMD = "CS\n";
@@ -37,5 +38,7 @@ namespace dvl_port_manager
 
         PathfinderFormat_t _dvlData;
         sonia_common_ros2::msg::NodeStatus _nodeStatus;
+
+        const float INVALID_SPEED = 32.727;
     };
 }
