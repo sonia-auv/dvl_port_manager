@@ -115,7 +115,7 @@ namespace dvl_port_manager
 
     void PathfinderDVL::checkVelocity(const sonia_common_ros2::msg::BodyVelocityDVL data)
     {
-        if (fabsf(data.x_vel_btm) >= INVALID_SPEED || fabsf(data.y_vel_btm) >= INVALID_SPEED || fabsf(data.z_vel_btm) >= INVALID_SPEED)
+        if (fabsf(data.x_vel_btm) >= _INVALID_SPEED || fabsf(data.y_vel_btm) >= _INVALID_SPEED || fabsf(data.z_vel_btm) >= _INVALID_SPEED)
             _nodeStatus.quality = sonia_common_ros2::msg::NodeStatus::Q_DEGRADE;
         else
             _nodeStatus.quality = sonia_common_ros2::msg::NodeStatus::Q_OK;

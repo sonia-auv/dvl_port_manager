@@ -28,7 +28,6 @@ namespace dvl_port_manager
 
         std::string _START_STOP_CMD = "===\n";
         std::string _START_DATA_CMD = "CS\n";
-        uint8_t _PATHFINDER_ID = 0x7D;
 
         rclcpp::Publisher<sonia_common_ros2::msg::BodyVelocityDVL>::SharedPtr _publisherBodyVelocity;
         rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr _publisherLeakSensor;
@@ -39,6 +38,7 @@ namespace dvl_port_manager
         PathfinderFormat_t _dvlData;
         sonia_common_ros2::msg::NodeStatus _nodeStatus;
 
-        const float INVALID_SPEED = 32.727;
+        const uint8_t _PATHFINDER_ID = 0x7D;
+        const float _INVALID_SPEED = 32.727;
     };
 }
