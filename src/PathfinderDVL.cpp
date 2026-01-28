@@ -80,7 +80,7 @@ namespace dvl_port_manager
 
                     _publisherBodyVelocity->publish(message);
 
-                    checkVelocity(message);
+                    _checkVelocity(message);
                 }
                 else
                 {
@@ -113,7 +113,7 @@ namespace dvl_port_manager
         return (uint16_t)ceil(checksum);
     }
 
-    void PathfinderDVL::checkVelocity(const sonia_common_ros2::msg::BodyVelocityDVL data)
+    void PathfinderDVL::_checkVelocity(const sonia_common_ros2::msg::BodyVelocityDVL data)
     {
         if (fabsf(data.x_vel_btm) >= _INVALID_SPEED || fabsf(data.y_vel_btm) >= _INVALID_SPEED || fabsf(data.z_vel_btm) >= _INVALID_SPEED)
             _nodeStatus.quality = sonia_common_ros2::msg::NodeStatus::Q_DEGRADE;
