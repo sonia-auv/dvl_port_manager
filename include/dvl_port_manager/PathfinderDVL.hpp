@@ -39,6 +39,6 @@ namespace dvl_port_manager
         sonia_common_ros2::msg::NodeStatus _nodeStatus;
 
         const uint8_t _PATHFINDER_ID = 0x7D;
-        const float _INVALID_SPEED = 32.727;
+        const float _INVALID_SPEED = -32.768;
     };
 }
