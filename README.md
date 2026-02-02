@@ -36,11 +36,12 @@ This project provides a ROS 2 interface for Doppler Velocity Log (DVL) sensors, 
 
 ## Registered Topics / Services / Actions
 
-| Type                  | Name                               | Direction       | Message/Service Type                 | Description                        |
-| --------------------- | ---------------------------------- | ----------------| ------------------------------------ | ---------------------------------- |
-| Topic                 | `/provider_dvl/dvl_velocity`       | Published       | `sonia_common_ros2/msg/BodyVelocity` | Body velocity data from the dvl    |
-| Topic                 | `/provider_dvl/dvl_leak_sensor`    | Published       | `std_msgs/msg/Bool`                  | Signal for leakage from the dvl    |
-| Topic                 | `/provider_dvl/enable_disable_dvl` | Subscribed      | `std_msgs/msg/Bool`                  | Signal the dvl to start or stop    |
+| Type            | Name                               | Direction       | Message/Service Type                 | Description                                         |
+| --------------- | ---------------------------------- | ----------------| ------------------------------------ | --------------------------------------------------- |
+| Topic           | `/provider_dvl/dvl_velocity`       | Published       | `sonia_common_ros2/msg/BodyVelocity` | Body velocity data from the dvl                     |
+| Topic           | `/provider_dvl/dvl_leak_sensor`    | Published       | `std_msgs/msg/Bool`                  | Signal for leakage from the dvl                     |
+| Topic           | `/provider_dvl/enable_disable_dvl` | Subscribed      | `std_msgs/msg/Bool`                  | Signal the dvl to start or stop                     |
+| Topic           | `/system_monitor/node_status`      | Published       | `sonia_common_ros2/msg/NodeStatus`   | Message contains information of the state of a node |
 
 ---
 ## Build Instructions
